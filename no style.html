@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markdown Viewer</title>
+  
+
+  
+</head>
+<body>
+
+
+
+
+ <!-- Docsify app container -->
+ 
+
+
+
+
+
+
+
+<h2>Markdown File</h2>
+
+<!-- Link to open rendered Markdown in new tab -->
+<p>
+  <a href="#" id="open-md-link">Open Markdown File</a>
+</p>
+
+<script>
+  const markdownUrl = "https://sagarhadkar-bucket.s3.us-east-2.amazonaws.com/Customer.md";
+
+  document.getElementById("open-md-link").addEventListener("click", function(e){
+    e.preventDefault();
+
+    const newWin = window.open("", "_blank");
+
+    newWin.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Markdown Viewer</title>
+		
+		
+		
+		
+        
+		
+		
+		<!-- GitHub Markdown CSS -->
+        <link rel="stylesheet" href="github-markdown.min.css">
+        <style>
+          body {
+            padding: 20px;
+          }
+        </style>
+		
+		
+		
+		
+		
+		
+		
+		
+      </head>
+      <body>
+        <article class="markdown-body">
+          <div id="markdown-content"></div>
+        </article>
+
+        <!-- Marked.js library -->
+        <script src="marked.min.js"><\/script>
+
+        <script>
+          fetch("${markdownUrl}")
+            .then(res => res.text())
+            .then(md => {
+              document.getElementById("markdown-content").innerHTML = marked.parse(md);
+            })
+            .catch(err => {
+              document.getElementById("markdown-content").innerHTML = "Error loading Markdown file";
+              console.error(err);
+            });
+        <\/script>
+		
+		
+      </body>
+      </html>
+    `);
+
+    newWin.document.close();
+  });
+</script>
+
+</body>
+</html>
